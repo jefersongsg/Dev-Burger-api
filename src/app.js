@@ -6,16 +6,15 @@ import './database';
 
 class App {
     constructor() {
-        this.App = express()
+        this.app = express()
 
         this.middlewares();
         this.routes();
     }
 
     middlewares() {
-        this.app.use(
-            express.json()
-        );
+        this.app.use(express.json());
+        this.app.use('/product-file');
     }
     routes() {
         this.app.use(routes);
