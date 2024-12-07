@@ -1,6 +1,6 @@
  
 import * as Yup from 'yup';
-import Product from '../models/Product';
+import Product from '../models/Product.js';
 
 class ProductController {
     async store(req,res){
@@ -16,7 +16,7 @@ class ProductController {
             return res.status(400).json({ error: err.errors });
           }
 
-          const {filemane:path} = req.file;
+          const { filename: path} = req.file;
           const { name, price ,category} = req.body;
 
           const product = await Product.create({
