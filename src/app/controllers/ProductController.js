@@ -34,12 +34,11 @@ class ProductController {
       include: [
         {
           model: Category,
-          as: 'category_id',
-          attributes: ['id', 'name']
-        }
-      ]
-    }
-    );
+          as: 'category',
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
 
     return res.json(products);
   }
