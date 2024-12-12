@@ -1,6 +1,6 @@
 
 import jwt from 'jsonwebtoken';
-import authConfig from '../config/auth.js'
+import authConfig from '../../config/auth.js'
 
 function authMidd(req, res, next) {
     const authToken = req.headers.authorization;
