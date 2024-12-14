@@ -3,17 +3,18 @@ import * as Yup from 'yup';
 import Order from '../schemas/Order.js';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
+import User from '../models/User.js';
 
 class OrderController {
   async store(req, res) {
     const schema = Yup.object({
       products: Yup.array().required()
-      .of(
-        Yup.object({
-          id: Yup.number().required(),
-          quantity: Yup.number().required(),
-        })
-      )
+        .of(
+          Yup.object({
+            id: Yup.number().required(),
+            quantity: Yup.number().required(),
+          })
+        )
     });
 
     try {
@@ -68,33 +69,38 @@ class OrderController {
     return res.status(201).json(createdOrder);
   }
 
-  async index(req, res){
+  async index(req, res) {
     const orders = await Order.find();
 
     return res.json(orders);
   }
-  async update ( req, res) {
-      const schema = Yup.object({
-        status: Yup.string().required()
-      });
-  
-      try {
-        schema.validateSync(req.body, { abortEarly: false });
-      } catch (err) {
-        return res.status(400).json({ error: err.errors });
-      }
+  async update(req, res) {
+    const schema = Yup.object({
+      status: Yup.string().required()
+    });
 
-      const {id} = req.params;
-      const {status} = req.body;
+    try {
+      schema.validateSync(req.body, { abortEarly: false });
+    } catch (err) {
+      return res.status(400).json({ error: err.errors });
+    }
+    const { admin: isAdmin } = await User.findByPk(req.userId);
 
-      try {
-        await Order.updateOne({_id: id }, {status});
-      }catch (err) {
-        return res.status(400).json({ error: err.message });
-      }
-      return res.json({message: 'Status update sucessfully' });
+    if (!isAdmin) {
+      return res.status(401).json();
+    }
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+      await Order.updateOne({ _id: id }, { status });
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    return res.json({ message: 'Status update sucessfully' });
   }
- }
+}
 
 
 export default new OrderController()

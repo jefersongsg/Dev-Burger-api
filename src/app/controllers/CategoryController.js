@@ -1,7 +1,7 @@
 
 import * as Yup from 'yup';
-import category from '../models/Category.js';
 import Category from '../models/Category.js';
+import User from '../models/User.js';
 
 class CategoryController {
   async store(req, res) {
@@ -14,6 +14,12 @@ class CategoryController {
     } catch (err) {
       return res.status(400).json({ error: err.errors });
     }
+    const { admin: isAdmin } = await User.findByPk(req.userId);
+
+    if (!isAdmin) {
+      return res.status(401).json();
+    }
+
     const { name } = req.body;
 
     const categoryExists = await Category.findOne({
