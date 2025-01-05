@@ -1,7 +1,5 @@
 
 import Sequelize, { Model } from 'sequelize';
-import Category from './Category';
-
 
 class Product extends Model {
     static init(sequelize) {
@@ -10,6 +8,7 @@ class Product extends Model {
                 name: Sequelize.STRING,
                 price: Sequelize.INTEGER,
                 path: Sequelize.STRING,
+                offer: Sequelize.BOOLEAN,
                 url: {
                     type: Sequelize.VIRTUAL,
                     get() {
@@ -24,7 +23,7 @@ class Product extends Model {
         return this;
     }
     static associate(models) {
-        this.belongsTo( models.Category, {
+        this.belongsTo(models.Category, {
             foreignKey: 'category_id',
             as: 'category',
         });
