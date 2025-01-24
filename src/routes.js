@@ -9,6 +9,7 @@ import SessionController from './app/controllers/SessionController.js';
 import ProductController from './app/controllers/ProductController.js';
 import CategoryController from './app/controllers/CategoryController.js';
 import OrderController from './app/controllers/OrderController.js';
+import CreatePaymentIntentController from './app/controllers/stripe/CreatePaymentIntent.js'
 
 const routes = new Router();
 
@@ -31,4 +32,7 @@ routes.post('/orders', OrderController.store);
 routes.get('/orders', OrderController.index);
 routes.put('/orders/:id', OrderController.update);
 
-export default routes
+routes.post('/create-payment-intent', CreatePaymentIntentController.store);
+
+
+export default routes;
