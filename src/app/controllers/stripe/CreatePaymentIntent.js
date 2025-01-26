@@ -1,7 +1,6 @@
 
 import Stripe from 'stripe';
 import * as Yup from 'yup';
-
 import Key from '../../../config/auth.js';
 
 const stripe = new Stripe(Key.STRIPE_SECRET_KEY);
@@ -12,7 +11,7 @@ const calculateOrderAmount = (items) => {
         return current.price * current.quantity + acc;
 
     },0);
-    return total * 100;
+    return total;
 };
 
 class CreatePaymentIntentController {
